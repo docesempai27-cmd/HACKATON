@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "feature_id": "repo-cleanup-and-refactor",
+    "document_type": "functional_specification",
+    "status": "approved",
+    "project": "fastHealth",
+    "version": "1.0.0"
+  },
+  "scope": {
+    "in_scope": [
+      "Aplanar la estructura anidada del repositorio para que la raíz contenga directamente la aplicación fastHealth funcional.",
+      "Eliminar directorios duplicados redundantes (carpeta anidada 'intelligent-systems-platform/intelligent-systems-platform/').",
+      "Limpieza de artefactos de compilación residuales (__pycache__, archivos temporales).",
+      "Consolidación de archivos de configuración (.env.example, .gitignore, requirements.txt, config.py).",
+      "Preservación intacta de la lógica de negocio: triaje clínico, motor determinístico de asignación (AssignmentEngine), geocodificación, base de datos SQLite y componentes Streamlit.",
+      "Creación de documentación clara y estandarizada para ejecución local y desarrollo futuro."
+    ],
+    "out_of_scope": [
+      "Cambios en el algoritmo clínico de triaje o prompts médicos fundamentales durante esta fase de limpieza.",
+      "Sustitución de Streamlit por otro framework frontend.",
+      "Migración de la base de datos SQLite a PostgreSQL u otro motor externo (se mantiene SQLite local)."
+    ]
+  },
+  "use_cases": [
+    {
+      "id": "UC01",
+      "name": "Ejecución directa y limpia del proyecto",
+      "actor": "Desarrollador / Evaluador",
+      "description": "El desarrollador clona/abre el repositorio HACKATON y puede ejecutar directamente 'streamlit run app.py' desde la raíz sin lidiar con rutas anidadas confusas."
+    },
+    {
+      "id": "UC02",
+      "name": "Mantenimiento y navegación clara del código",
+      "actor": "Desarrollador",
+      "description": "El desarrollador encuentra modularizados los componentes de frontend (Streamlit), backend (LLM, geocoding, database, asignación) y datos (JSON mocks, prompts) en carpetas limpias de primer nivel."
+    },
+    {
+      "id": "UC03",
+      "name": "Trazabilidad de memoria con Obsidian",
+      "actor": "Desarrollador / Agente de IA",
+      "description": "El agente y el desarrollador pueden continuar registrando sesiones y decisiones en Obsidian a través de AGENTS.md sin enlaces rotos tras el aplanamiento de rutas."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC01",
+      "title": "Estructura de raíz unificada",
+      "given": "El repositorio HACKATON con carpetas anidadas redundantes",
+      "when": "Se completa la reestructuración",
+      "then": "Todos los archivos del proyecto (app.py, backend/, components/, data/, prompts/, styles/) residen en la raíz limpia sin niveles redundantes como 'intelligent-systems-platform/intelligent-systems-platform/'."
+    },
+    {
+      "id": "AC02",
+      "title": "Ejecución sin errores de importación",
+      "given": "La estructura aplanada y las dependencias instaladas",
+      "when": "Se ejecuta 'python -c \"import app\"' o 'streamlit run app.py'",
+      "then": "La aplicación carga sus módulos (backend, components, data, config) sin errores de ModuleNotFoundError ni rutas relativas rotas."
+    },
+    {
+      "id": "AC03",
+      "title": "Cero pérdida de datos o lógica",
+      "given": "Los datos mock (centros médicos, guardias, prompts y tests de triaje)",
+      "when": "Se finaliza la limpieza",
+      "then": "Todos los centros médicos reales de Oro Verde/Paraná, prompts y componentes permanecen intactos y accesibles."
+    }
+  ],
+  "business_rules": [
+    {
+      "id": "BR01",
+      "rule": "Prioridad de preservación: ninguna limpieza debe eliminar código fuente funcional o datos de centros médicos."
+    },
+    {
+      "id": "BR02",
+      "rule": "Seguridad de secretos: no versionar archivos .env con credenciales reales; asegurar .env.example con variables documentadas."
+    },
+    {
+      "id": "BR03",
+      "rule": "Integridad de AGENTS.md: preservar la vinculación con el cerebro Obsidian 'cerebro' y proyecto 'fastHealth'."
+    }
+  ]
+}

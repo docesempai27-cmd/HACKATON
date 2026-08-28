@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "feature_id": "repo-cleanup-and-refactor",
+    "document_type": "technical_specification",
+    "status": "approved",
+    "project": "fastHealth",
+    "version": "1.0.0"
+  },
+  "architecture": {
+    "target_root": "C:\\Users\\angel\\Desktop\\dev\\HACKATON",
+    "runtime": "Python 3.10+ / Streamlit",
+    "layout_tree": {
+      "app.py": "Punto de entrada Streamlit unificado",
+      "config.py": "Configuración y resolución de rutas relativas basadas en BASE_DIR",
+      "requirements.txt": "Dependencias mínimas (streamlit, openai, python-dotenv)",
+      ".env.example": "Plantilla de variables de entorno (OPENAI_API_KEY, BASE_URL, MODEL)",
+      ".gitignore": "Ignorar __pycache__, .env, .db, .sqlite, .DS_Store, venv",
+      "README.md": "Documentación centralizada del proyecto y hackathon",
+      "AGENTS.md": "Integración con Obsidian Cerebro Personal",
+      "backend/": "Lógica médica, TriageAgent, AssignmentEngine, Database SQLite, Geocodificación y LLM Adapter",
+      "components/": "Vistas UI de Streamlit (Landing, Chat Paciente, Panel Guardia, Sidebar)",
+      "data/": "Fuentes de datos JSON (centros médicos reales Oro Verde/Paraná, hospital_status, history)",
+      "modules/": "Módulos de extensión de salud (Chronopill, QueueMatch, RxAudit, StockHunter, TriageFlow)",
+      "prompts/": "Templates de prompts de triaje clínico y validación de guardia",
+      "styles/": "Hojas de estilo CSS personalizadas (style.css)",
+      "specs/": "Especificaciones y trazabilidad spec-json-iteration-flow"
+    }
+  },
+  "interfaces": {
+    "file_operations": [
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/backend",
+        "destination": "backend"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/components",
+        "destination": "components"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/data",
+        "destination": "data"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/modules",
+        "destination": "modules"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/prompts",
+        "destination": "prompts"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/styles",
+        "destination": "styles"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/app.py",
+        "destination": "app.py"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/config.py",
+        "destination": "config.py"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/requirements.txt",
+        "destination": "requirements.txt"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/.env.example",
+        "destination": ".env.example"
+      },
+      {
+        "action": "move_to_root",
+        "source": "intelligent-systems-platform/.gitignore",
+        "destination": ".gitignore"
+      },
+      {
+        "action": "delete_redundant",
+        "target": "intelligent-systems-platform/intelligent-systems-platform"
+      },
+      {
+        "action": "delete_cache",
+        "target": "**/__pycache__"
+      },
+      {
+        "action": "delete_empty_container",
+        "target": "intelligent-systems-platform"
+      }
+    ],
+    "config_contract": {
+      "base_dir_resolution": "BASE_DIR = Path(__file__).resolve().parent",
+      "data_dir": "BASE_DIR / 'data'",
+      "prompts_dir": "BASE_DIR / 'prompts'",
+      "styles_dir": "BASE_DIR / 'styles'"
+    }
+  },
+  "libraries": [
+    {
+      "name": "streamlit",
+      "version": ">=1.38.0",
+      "purpose": "Framework de interfaz de usuario reactiva"
+    },
+    {
+      "name": "openai",
+      "version": ">=1.40.0",
+      "purpose": "SDK compatible con endpoints LLM y Gemma 4"
+    },
+    {
+      "name": "python-dotenv",
+      "version": ">=1.0.0",
+      "purpose": "Carga de variables de entorno"
+    }
+  ],
+  "test_strategy": {
+    "pre_flight_checks": [
+      "Verificar que existan todos los archivos de origen en intelligent-systems-platform antes de mover."
+    ],
+    "migration_execution": [
+      "Mover carpetas y archivos al nivel raíz del repositorio.",
+      "Eliminar carpetas anidadas clonadas y temporales."
+    ],
+    "post_flight_checks": [
+      "Verificar existencia de app.py, backend/, components/, data/, prompts/ en raíz.",
+      "Verificar que no queden carpetas 'intelligent-systems-platform' huérfanas.",
+      "Ejecutar verificación de sintaxis e importación en Python: 'python -c \"import config; print(config.config.BASE_DIR)\"'.",
+      "Verificar carga de centros médicos JSON y tablas SQLite."
+    ]
+  },
+  "implementation_phases": [
+    {
+      "phase": 1,
+      "name": "Preparación y Resguardo",
+      "description": "Confirmar integridad de archivos clave (centros médicos, prompts, database) antes de la migración."
+    },
+    {
+      "phase": 2,
+      "name": "Aplanamiento y Purga",
+      "description": "Mover archivos a la raíz y eliminar carpetas anidadas duplicadas y caches compiladas."
+    },
+    {
+      "phase": 3,
+      "name": "Ajuste de Configuración y Rutas",
+      "description": "Validar que config.py resuelva correctamente las rutas relativas desde la nueva raíz."
+    },
+    {
+      "phase": 4,
+      "name": "Smoke Test y Verificación",
+      "description": "Ejecutar pruebas de importación y verificar que el proyecto cargue limpiamente."
+    }
+  ]
+}

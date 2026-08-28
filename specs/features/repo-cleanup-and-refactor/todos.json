@@ -1,0 +1,136 @@
+{
+  "feature_id": "repo-cleanup-and-refactor",
+  "document_type": "execution_todos",
+  "status": "completed",
+  "project": "fastHealth",
+  "version": "1.0.0",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Eliminar copia anidada redundante y caches compiladas",
+      "owner_role": "Refactoring Engineer",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [],
+      "outputs": [
+        "Eliminación de 'intelligent-systems-platform/intelligent-systems-platform/'",
+        "Eliminación de todas las carpetas '__pycache__'"
+      ],
+      "exit_criteria": [
+        "No existe la subcarpeta anidada duplicada",
+        "No hay residuos de bytecode .pyc en el árbol"
+      ]
+    },
+    {
+      "id": "T02",
+      "title": "Migrar paquetes y recursos funcionales a la raíz",
+      "owner_role": "Refactoring Engineer",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [
+        "T01"
+      ],
+      "outputs": [
+        "backend/ en la raíz",
+        "components/ en la raíz",
+        "data/ en la raíz",
+        "modules/ en la raíz",
+        "prompts/ en la raíz",
+        "styles/ en la raíz"
+      ],
+      "exit_criteria": [
+        "Todos los paquetes y recursos residen en C:\\Users\\angel\\Desktop\\dev\\HACKATON\\",
+        "Los datos de centros_medicos.json y hospital_status.json están preservados"
+      ]
+    },
+    {
+      "id": "T03",
+      "title": "Migrar scripts y configs raíz y eliminar contenedor huérfano",
+      "owner_role": "Refactoring Engineer",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [
+        "T02"
+      ],
+      "outputs": [
+        "app.py, config.py, requirements.txt, .env.example, .gitignore en raíz",
+        "Eliminación de la carpeta contenedora 'intelligent-systems-platform/'"
+      ],
+      "exit_criteria": [
+        "La raíz de HACKATON contiene directamente app.py",
+        "El directorio 'intelligent-systems-platform' ya no existe"
+      ]
+    },
+    {
+      "id": "T04",
+      "title": "Verificación de rutas relativas y configuración (config.py)",
+      "owner_role": "Backend Engineer",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [
+        "T03"
+      ],
+      "outputs": [
+        "Validación de BASE_DIR, DATA_DIR, PROMPTS_DIR y STYLES_DIR"
+      ],
+      "exit_criteria": [
+        "config.py apunta correctamente a las carpetas locales en la nueva raíz"
+      ]
+    },
+    {
+      "id": "T05",
+      "title": "Smoke Test de importación y carga de SQLite",
+      "owner_role": "QA Engineer",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [
+        "T04"
+      ],
+      "outputs": [
+        "Ejecución de test de importación: python -c 'import app, backend.database, components.landing'",
+        "Verificación de inicialización de base de datos"
+      ],
+      "exit_criteria": [
+        "Cero errores de importación (ModuleNotFoundError)",
+        "Las tablas SQLite se inicializan correctamente"
+      ]
+    },
+    {
+      "id": "T06",
+      "title": "Actualizar estado y registrar sesión en Obsidian Cerebro Personal",
+      "owner_role": "Documentation Agent",
+      "status": "done",
+      "parallelizable": false,
+      "depends_on": [
+        "T05"
+      ],
+      "outputs": [
+        "projects/fastHealth/INDEX.md actualizado",
+        "projects/fastHealth/sessions/2026-08-28-reestructuracion-y-limpieza.md creado"
+      ],
+      "exit_criteria": [
+        "El Vault de Obsidian refleja el estado limpio y ordenado del proyecto"
+      ]
+    }
+  ],
+  "parallel_execution_batches": [
+    [
+      "T01"
+    ],
+    [
+      "T02"
+    ],
+    [
+      "T03"
+    ],
+    [
+      "T04"
+    ],
+    [
+      "T05"
+    ],
+    [
+      "T06"
+    ]
+  ]
+}
